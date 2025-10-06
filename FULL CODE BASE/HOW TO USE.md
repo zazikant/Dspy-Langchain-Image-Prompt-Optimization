@@ -2,7 +2,7 @@ Step 1: Add api key
 
 Step 2: run !python main.py
 
-Step 3: # Just update Example usage to your actuall usage. you could even keep 1 for outpu (no need to generate all 6)
+Step 3: # In main.py, Just update Example usage to your actuall usage. you could even keep 1 for outpu (no need to generate all 6)
     examples = [
         {
             "taste": "anime",
