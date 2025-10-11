@@ -250,20 +250,75 @@ Verify pattern reuse (not literal copying):
 - [ ] Phase 2-3 features APPLY patterns to their specific context
 - [ ] ZERO new patterns introduced - only new applications
 
+**8. 📚 .agent/ DOCUMENTATION PLAN (For Agent Memory & Reuse)**
+
+Generate ready-to-save markdown content for the following files to enable future agent consistency:
+
+#### A. `.agent/system/architecture.md`
+```markdown
+[Summarize tech stack and coherence rationale from Section 2]
+```
+
+#### B. `.agent/system/db_schema.md`
+```markdown
+[Describe initial schema using Phase 1 naming PATTERN RULES—not literal names]
+```
+
+#### C. `.agent/system/api.md`
+```markdown
+[List core endpoints using Phase 1 API PATTERN RULES]
+```
+
+#### D. `.agent/tasks/{{project_slug}}_v1.md`
+```markdown
+[Save full MVP spec from Sections 1–6 as implementation reference]
+```
+
+#### E. `.agent/sops/initial_setup.md`
+```markdown
+## SOP: Project Initialization
+### Steps:
+1. Apply Phase 1 patterns to codebase structure
+2. Create `.agent/` folder with above docs
+3. Validate naming and layering before coding
+### Pitfalls:
+- Never override Phase 1 patterns
+- Always check `.agent/README.md` before starting
+```
+
+#### F. `.agent/README.md`
+```markdown
+# Agent Documentation Index
+
+## System
+- [Architecture](system/architecture.md)
+- [DB Schema](system/db_schema.md)
+- [API](system/api.md)
+
+## Tasks
+- [MVP Plan](tasks/{{project_slug}}_v1.md)
+
+## SOPs
+- [Project Setup](sops/initial_setup.md)
+
+> **Agent Rule**: ALWAYS read this README before any task to load context.
+```
+
 **Meta-Architecture Principle**:
 You're defining the "rules of the game," not the specific moves. Patterns should be transferable across similar projects. Implementation details emerge from applying patterns to the specific domain in user input.
 
-Generate the pattern-driven, coherent full-stack architectural specification now:"""
-    
+Generate the pattern-driven, coherent full-stack architectural specification now, including the .agent/ documentation plan:"""
+
     return process_with_api(prompt_template)
+
 
 def main():
     """Main function to demonstrate the coding project prompt generation system."""
     # Check if API key is set
-    if API_KEY == "sk-or-xxxx" or not API_KEY:
+    if API_KEY == "sk-or-xxxx" or not API_KEY.strip():
         print("Error: API key not set. Please replace 'sk-or-xxxx' with your actual OpenRouter API key.")
         return
-    
+
     # Example usage with coding project examples
     examples = [
         {
@@ -271,21 +326,22 @@ def main():
             "user_input": "a simple quiz app using next js and tailwind css"
         },
     ]
-    
-    print("=== GLM-4.5-Air Coding Project Prompt Generation System ===\n")
-    
+
+    print("=== GLM-4.5-Air Agent-Aware Architect (with .agent/ Docs) ===\n")
+
     for i, example in enumerate(examples, 1):
         print(f"Example {i}:")
         print(f"Taste: {example['taste']}")
         print(f"User Input: {example['user_input']}")
-        
+
         # Generate the coding project prompt using GLM-4.5-Air
         result = generate_prompt(
             taste=example['taste'],
             user_input=example['user_input']
         )
-        
-        print(f"Generated Prompt:\n{result}\n{'='*50}\n")
+
+        print(f"Generated Output:\n{result}\n{'='*80}\n")
+
 
 if __name__ == "__main__":
     main()
