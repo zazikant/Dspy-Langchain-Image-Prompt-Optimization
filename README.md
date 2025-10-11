@@ -3,6 +3,7 @@ sub Agents:
 1.  **task folder**: Contains Product Requirement Documents (PRDs) and their implementation plans.
 2.  **system folder**: Houses overarching architectural and structural information (e.g., project structure, database schemas, API specifications).
 3.  **SOPs folder**: Stores Standard Operating Procedures and logs of past mistakes.
+4. Readme.md: Your README.md might say:"Welcome to our restaurant operation system. We have three main sections...""Task Folder: Find daily prep instructions and event planning here""System Folder: Our menu structure, supplier list, and floor layout are here""SOPs Folder: Lessons from past mistakes and how to handle problems — located here"
 
 
 
