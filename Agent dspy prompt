@@ -1,0 +1,128 @@
+Agent-Specific Prompt Template (Minimal & Focused)
+
+import os
+import logging
+import requests
+import json
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+# API configuration for GLM-4.5-Air with hardcoded API key
+API_KEY = "sk-or-xxxx"  # ⚠️ Replace with your actual OpenRouter API key
+API_URL = "https://openrouter.ai/api/v1/chat/completions"  # Fixed: removed trailing space
+
+def process_with_api(prompt):
+    """Process with GLM-4.5-Air API and return the response"""
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "z-ai/glm-4.5-air:free",
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False,
+        "max_tokens": 4000
+    }
+    try:
+        response = requests.post(API_URL, headers=headers, data=json.dumps(data), timeout=60)
+        logging.info(f"Response Status: {response.status_code}")
+        if response.status_code == 200:
+            response_data = response.json()
+            if 'choices' in response_data and len(response_data['choices']) > 0:
+                return response_data['choices'][0]['message']['content']
+            else:
+                logging.error(f"No choices in response: {response_data}")
+                return "Error: No content in response"
+        else:
+            logging.error(f"API Error: {response.status_code} - {response.text}")
+            return f"Error: {response.status_code}\n{response.text}"
+    except requests.exceptions.Timeout:
+        return "Error: API request timeout."
+    except Exception as e:
+        logging.error(f"Request Exception: {e}")
+        return f"Error: Request failed - {str(e)}"
+
+
+def generate_agent_docs(project_idea, task_type="feature"):
+    """
+    Generate .agent/ documentation for Cloud Code / AI agent context.
+    
+    Outputs ready-to-save markdown for:
+    - .agent/system/architecture.md
+    - .agent/tasks/{slug}_v1.md
+    - .agent/sops/{process}.md (if applicable)
+    - .agent/README.md
+    """
+    prompt = f"""You are an AI coding agent that maintains a structured documentation system in a `.agent/` folder to improve future performance.
+
+**Project Idea**: "{project_idea}"
+**Task Type**: {task_type}
+
+Generate ONLY the following markdown blocks—nothing else.
+
+#### A. `.agent/system/architecture.md`
+```markdown
+[Concise description of tech stack: frontend, backend, database, auth, and key services]
+```
+
+#### B. `.agent/tasks/{{slug}}_v1.md`
+```markdown
+## Task: {project_idea}
+**Type**: {task_type}
+**Implementation Plan**:
+- [Step 1]
+- [Step 2]
+- [Key files to modify]
+**Validation**: [How to test success]
+```
+
+#### C. `.agent/sops/initial_setup.md`
+```markdown
+## SOP: Project Initialization
+### Steps:
+1. Create `.agent/` folder
+2. Generate system, task, and README docs
+3. Always read `.agent/README.md` before new tasks
+### Pitfalls:
+- Never skip documentation after implementation
+- Reuse patterns from existing tasks
+```
+
+#### D. `.agent/README.md`
+```markdown
+# Agent Documentation Index
+
+## System
+- [Architecture](system/architecture.md)
+
+## Tasks
+- [{{slug}} Plan](tasks/{{slug}}_v1.md)
+
+## SOPs
+- [Project Setup](sops/initial_setup.md)
+
+> **Agent Rule**: ALWAYS read this README before starting any task.
+```
+
+Derive `{{slug}}` as snake_case from the project idea (e.g., "text to video" → `text_to_video`). Output ONLY the four markdown blocks above."""
+    
+    return process_with_api(prompt)
+
+
+def main():
+    if not API_KEY or API_KEY == "sk-or-xxxx":
+        print("Error: Please set a valid OpenRouter API key.")
+        return
+
+    project = "a simple quiz app using next js and tailwind css"
+    print("Generating agent-specific documentation...\n")
+    result = generate_agent_docs(project, task_type="MVP feature")
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
