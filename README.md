@@ -5,7 +5,10 @@ sub Agents:
 3.  **SOPs folder**: Stores Standard Operating Procedures and logs of past mistakes.
 4. Readme.md: Your README.md might say:"Welcome to our restaurant operation system. We have three main sections...""Task Folder: Find daily prep instructions and event planning here""System Folder: Our menu structure, supplier list, and floor layout are here""SOPs Folder: Lessons from past mistakes and how to handle problems — located here"
 
+The compact Command: To proactively clean up the conversation history and reduce overhead, the compact command can be run after the agent completes a set of isolated tasks
+
 also,if the main agent is instructed to look at .agents folder first (just like the sub-agents), that folder could contain a file that lists: "Available sub-agents: SubAgent1.md, SubAgent2.md" with details on what each one does
+
 
 
 Question: Lets say I have a langgraph agent and a node has a code that does a input as email id and output as 10 different fields of operations. Will this node code be a task? Will it be a sop? Will it be a system folder?
