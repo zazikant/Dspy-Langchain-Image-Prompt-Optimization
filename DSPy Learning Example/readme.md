@@ -82,6 +82,59 @@ If you **don’t compile** (i.e., no training data), DSPy will still work — it
 
 So yes — **you can always use DSPy instead of LLM chains with prompt templates**, **as long as you’re willing to give it examples to learn from**.
 
+---
+
+**a signature is just a typed “flow” declaration**:
+
+```python
+"question, context -> answer"
+```
+
+means:
+
+| Side | Meaning |
+|------|---------|
+| **Left of `->`** | **Input variables** (what you feed in) |
+| **Right of `->`** | **Output variables** (what the LLM must produce) |
+
+---
+
+### 🔍 Example
+
+```python
+class MySig(dspy.Signature):
+    """Answer the question using the context."""
+    context = dspy.InputField(desc="background info")
+    question = dspy.InputField(desc="user question")
+    answer = dspy.OutputField(desc="concise answer")
+```
+
+or inline:
+
+```python
+predict = dspy.ChainOfThought("context, question -> answer")
+```
+
+---
+
+### ✅ So:
+- **Signature ≠ code flow**  
+  It’s just a **schema**: *“These two variables go in, that one comes out.”*
+- DSPy uses it to **auto-build prompts**, **parse outputs**, and **track fields**.
+- You **never** write `f"Context: {context}\nQuestion: {question}\nAnswer:"` — DSPy generates it.
+
+---
+
+### 🧠 Mental model
+Think of a signature like a **function type signature**:
+
+```python
+def f(context: str, question: str) -> str:
+    ...
+```
+
+but for **LLM calls**.
+
 
 # Model Test Results
 
