@@ -1,8 +1,8 @@
 # System Flow Clarification
 
-## DSPy Module ([dspy_module.py](/home/zazikant/FULL CODE BASE/dspy_module.py)) - Provides the initial optimization using training data from the create_training_examples() function
-## LangChain Module ([langchain_chains.py](/home/zazikant/FULL CODE BASE/langchain_chains.py)) - Provides the final enhancement and output
-## The flow is: User Input → DSPy Optimization → LangChain Enhancement → Final Output
+### 1. DSPy Module ([dspy_module.py](/home/zazikant/FULL CODE BASE/dspy_module.py)) - Provides the initial optimization using training data from the create_training_examples() function
+### 2. LangChain Module ([langchain_chains.py](/home/zazikant/FULL CODE BASE/langchain_chains.py)) - Provides the final enhancement and output
+### 3. The flow is: User Input → DSPy Optimization → LangChain Enhancement → Final Output
 
 
 # Adding New Taste Categories to the Prompt Optimization System
