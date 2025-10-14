@@ -1,3 +1,8 @@
+chain of thoughts in dsp similarity with langchain:
+
+CoT ≠ load_summarize_chain
+CoT = single LLM chain
+
 # Model Test Results
 
 ## Execution Command
