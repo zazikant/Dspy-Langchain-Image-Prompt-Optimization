@@ -322,3 +322,70 @@ If you encounter problems adding a new taste category:
 **Time estimate:** 10-15 minutes per new taste category
 
 **Key principle:** The quality of your training examples directly impacts the quality of generated prompts for that taste.
+
+
+
+# Unknown Taste Handling: Technical Documentation
+
+This document explains what happens when the system encounters an unknown or undefined taste category, and the current limitations of the prompt optimization system.
+
+---
+
+## System Flow Overview
+
+When a user provides a taste category, it goes through the following stages:
+
+```
+User Input (taste="unknown")
+    ↓
+1. Validation Stage (utils.py)
+    ↓ [STOPS HERE if invalid]
+2. DSPy Processing (dspy_module.py)
+    ↓
+3. LangChain Enhancement (langchain_chains.py)
+    ↓
+Output: Optimized Prompt
+```
+
+---
+
+## Stage-by-Stage Behavior
+
+### Stage 1: Validation (`utils.py`)
+
+**File:** `utils.py`  
+**Location:** Lines 6-10  
+**Function:** `validate_taste()`
+
+```python
+def validate_taste(taste: str) -> str:
+    valid_tastes = [
+        'photorealistic', 
+        'oil painting', 
+        'anime', 
+        'cyberpunk', 
+        'watercolor', 
+        '3d render'
+    ]
+    
+    if taste.lower() not in valid_tastes:
+        raise ValueError(f"Invalid taste. Choose from: {', '.join(valid_tastes)}")
+    
+    return taste.lower()
+```
+
+#### What Happens:
+- **Input:** Any taste string (e.g., "comedy", "vintage", "steampunk")
+- **Process:** Checks if taste exists in `valid_tastes` list
+- **Output:** 
+  - ✅ If valid: Returns lowercase taste string
+  - ❌ If invalid: Raises `ValueError` and **stops execution**
+
+#### Example Error:
+```python
+generator.generate(taste="comedy", user_input="a funny cat")
+# Error: ValueError: Invalid taste. Choose from: photorealistic, oil painting, anime, cyberpunk, watercolor, 3d render
+```
+
+**Current Behavior:** 🛑 **Hard stop** - No further processing occurs
+
