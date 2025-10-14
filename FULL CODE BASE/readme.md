@@ -1,3 +1,7 @@
+Correct .env File Requirements:
+# Only need OpenRouter API Key for GLM-4.5-Air
+OPENROUTER_API_KEY=your-openrouter-api-key-here
+
 # System Flow Clarification
 
 ### 1. DSPy Module ([dspy_module.py](/home/zazikant/FULL CODE BASE/dspy_module.py)) - Provides the initial optimization using training data from the create_training_examples() function
