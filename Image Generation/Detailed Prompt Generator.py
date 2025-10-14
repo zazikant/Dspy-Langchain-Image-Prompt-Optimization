@@ -53,7 +53,7 @@ def process_with_glm(prompt):
             }
         ],
         "stream": False,
-        "temperature": 0.3
+        "temperature": 0.7
     }
 
     try:
