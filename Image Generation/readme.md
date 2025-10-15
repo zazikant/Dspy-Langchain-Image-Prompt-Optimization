@@ -2,6 +2,7 @@
 
 Keep temperature 0.7 . Else keep 0.3 when you want detailed prompt without much creativity. The only part that wasn't working was the `BootstrapFewShot` teleprompter, but the core DSPy functionality for prompt generation is fully implemented and working, as evidenced by the successful prompt generation outputs in the test runs. So the learning from examples provided doesnt work.
 
+The final prompt is reloaded from cache when you try to run again with same input. 
 
 This code uses DSPy to generate prompts. Here's how:
 
