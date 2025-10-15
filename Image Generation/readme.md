@@ -1,5 +1,7 @@
 # DSPy Prompt Generation Explanation
 
+Keep temperature 0.7 . Else keep 0.3 when you want detailed prompt without much creativity.
+
 This code uses DSPy to generate prompts. Here's how:
 
 ## DSPy Signatures
