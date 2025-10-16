@@ -1,3 +1,9 @@
+very important: let's say you made claude.md file, just copy entire file as a prompt and the output will be a long DSPy version with entire workflow of claude md file.
+
+
+also , the examples can be changed and MVP as taste too. dspy uses learning from example to give enhanced output 
+
+
 # DSPy Prompt Enhancement System Guide
 
 ## How the DSPy Prompt Enhancement System Works
