@@ -67,6 +67,69 @@ Yes, this code definitely uses DSPy to generate prompts. It leverages the DSPy f
 
 The only part that wasn't working was the `BootstrapFewShot` teleprompter, but the core DSPy functionality for prompt generation is fully implemented and working, as evidenced by the successful prompt generation outputs in the test runs.
 
+# Quality Metric for DSPy Evaluation
+
+The quality metric in this code is called `prompt_quality_metric()` and it evaluates how good the generated prompt is based on several criteria. Let me break it down:
+
+## How the Quality Metric Works
+
+The function calculates a score between 0 and 1 by checking these indicators:
+
+1. **Details Check**: Looks for the word "detailed" in the prompt
+2. **Style Check**: Checks for style-related terms like "style", "technique", or "aesthetic"
+3. **Technical Check**: Looks for technical terms like "lighting", "focus", "texture", etc.
+4. **Mood Check**: Searches for mood-related terms like "mood", "atmosphere", or "feeling"
+
+Additionally, it has specific checks based on the artistic taste:
+
+5. **Photography Terms** (for 'photorealistic' style): Checks for camera-specific terms like "aperture", "f/", "shutter", etc.
+6. **Painting Terms** (for 'oil painting' style): Looks for painting-specific terms like "brushstroke", "impasto", "canvas", etc.
+
+The final score is calculated by counting how many of these indicators are present and dividing by the total number of indicators.
+
+## What Happens When You Add a New Taste
+
+When you add a new taste (like "watercolor"), here's how the quality metric would be affected:
+
+1. **General Indicators Still Apply**: The metric will still check for the general quality indicators (details, style, technical, mood), which is good because these apply to any artistic style.
+
+2. **Missing Style-Specific Checks**: The current metric only has specific checks for 'photorealistic' and 'oil painting'. Your new taste won't have these specific checks, which might result in a lower quality score even if the prompt is good for that style.
+
+3. **No Taste-Specific Evaluation**: The metric won't know if the prompt includes terms that are important for your new taste (like "wet-on-wet" for watercolor or "cel-shaded" for anime-style art).
+
+## How to Improve the Metric for a New Taste
+
+To properly evaluate a new taste, you should update the `prompt_quality_metric()` function:
+
+```python
+def prompt_quality_metric(example, pred, trace=None) -> float:
+    """Calculate quality score for the final enhanced prompt."""
+    prompt = pred.enhanced_prompt
+    
+    # General quality indicators
+    has_details = 'detailed' in prompt.lower()
+    has_style = any(style in prompt.lower() for style in ['style', 'technique', 'aesthetic'])
+    has_technical = any(tech in prompt.lower() for tech in ['lighting', 'focus', 'texture', 'composition', 'resolution', 'aperture'])
+    has_mood = any(mood in prompt.lower() for mood in ['mood', 'atmosphere', 'ambiance', 'feeling'])
+    
+    # Taste-specific checks
+    has_photography_terms = True
+    has_painting_terms = True
+    has_watercolor_terms = True  # New for watercolor taste
+    
+    if example.taste == 'photorealistic':
+        has_photography_terms = any(term in prompt.lower() for term in ['aperture', 'f/', 'shutter', 'depth', 'bokeh'])
+    elif example.taste == 'oil painting':
+        has_painting_terms = any(term in prompt.lower() for term in ['brushstroke', 'impasto', 'canvas', 'palette', 'texture'])
+    elif example.taste == 'watercolor':  # New condition for watercolor
+        has_watercolor_terms = any(term in prompt.lower() for term in ['wet-on-wet', 'washes', 'dry brush', 'transparency', 'flow'])
+    
+    # Calculate score
+    indicators = [has_details, has_style, has_technical, has_mood, has_photography_terms, has_painting_terms, has_watercolor_terms]
+    return sum(indicators) / len(indicators)
+```
+
+This way, when you add a new taste, you can also add specific checks that are relevant to that artistic style, ensuring the quality metric properly evaluates prompts in that style.
 
 # Answering Your Questions
 
