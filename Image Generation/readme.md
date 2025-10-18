@@ -80,7 +80,7 @@ The function calculates a score between 0 and 1 by checking these indicators:
 3. **Technical Check**: Looks for technical terms like "lighting", "focus", "texture", etc.
 4. **Mood Check**: Searches for mood-related terms like "mood", "atmosphere", or "feeling"
 
-Additionally, it has specific checks based on the artistic taste:
+Additionally, it has specific checks based on the artistic taste ( to add for new taste as "watercolor" do add has_watercolor_terms=True)
 
 5. **Photography Terms** (for 'photorealistic' style): Checks for camera-specific terms like "aperture", "f/", "shutter", etc.
 6. **Painting Terms** (for 'oil painting' style): Looks for painting-specific terms like "brushstroke", "impasto", "canvas", etc.
