@@ -1,3 +1,151 @@
+# Adding "Flat Illustration" Taste to the Code
+
+I'll add a new taste called "flat illustration" which is a modern, minimalist style that combines elements of flat design with illustration. Here's the updated code with all the necessary changes:
+
+```python
+# Updated validate_taste function
+def validate_taste(taste: str) -> str:
+    """Validate the artistic taste category."""
+    valid_tastes = ['photorealistic', 'oil painting', 'anime', 'cyberpunk', 'watercolor', '3d render', 'flat illustration']
+    if taste.lower() not in valid_tastes:
+        raise ValueError(f"Invalid taste. Choose from: {', '.join(valid_tastes)}")
+    return taste.lower()
+
+# Updated create_training_data function (adding flat illustration example)
+def create_training_data() -> List[Dict[str, str]]:
+    """Create training examples for DSPy."""
+    return [
+        {
+            'taste': 'photorealistic',
+            'user_input': 'a cat sitting on a windowsill',
+            'optimized_prompt': 'Ultra realistic photograph of a ginger cat sitting on a sunlit windowsill, detailed fur texture, sharp focus, natural lighting, 85mm lens, shallow depth of field',
+            'optimized_reasoning': 'The original description is simple. I enhanced it by adding details about the cat\'s color, the lighting conditions, camera equipment, and photography techniques.',
+            'enhanced_prompt': 'Ultra realistic photograph of a ginger cat sitting on a sunlit windowsill, detailed fur texture, sharp focus, natural lighting, 85mm lens, shallow depth of field, 4K resolution, f/1.8 aperture, golden hour glow, cinematic composition',
+            'enhanced_reasoning': 'I added technical photography details like resolution, aperture, and lighting to make the prompt more specific for photorealistic rendering.'
+        },
+        {
+            'taste': 'oil painting',
+            'user_input': 'a mountain landscape',
+            'optimized_prompt': 'Oil painting of majestic mountain landscape at sunset, impressionist style, visible brushstrokes, warm golden hour light, textured canvas, rich color palette',
+            'optimized_reasoning': 'I enhanced the basic mountain landscape by specifying it as an oil painting in impressionist style, with details about brushwork and lighting.',
+            'enhanced_prompt': 'Oil painting of majestic mountain landscape at sunset, impressionist style, visible brushstrokes, warm golden hour light, textured canvas, rich color palette, canvas texture visible, Rembrandt lighting, thick impasto technique, 24"x36" aspect ratio',
+            'enhanced_reasoning': 'I added oil painting specific techniques like impasto, canvas texture, and referenced Rembrandt lighting to enhance the artistic quality.'
+        },
+        {
+            'taste': 'anime',
+            'user_input': 'a futuristic city',
+            'optimized_prompt': 'Anime style illustration of a futuristic cyberpunk cityscape at night, neon lights, flying vehicles, detailed architecture, vibrant colors, high contrast',
+            'optimized_reasoning': 'I took the basic futuristic city concept and transformed it into an anime-style cyberpunk city with specific visual elements.',
+            'enhanced_prompt': 'Anime style illustration of a futuristic cyberpunk cityscape at night, neon lights, flying vehicles, detailed architecture, vibrant colors, high contrast, Studio Ghibli influences, detailed backgrounds, cel-shaded rendering, 1080p resolution',
+            'enhanced_reasoning': 'I added anime-specific rendering techniques like cel-shading, referenced Studio Ghibli style, and included resolution details.'
+        },
+        {
+            'taste': 'cyberpunk',
+            'user_input': 'a street market',
+            'optimized_prompt': 'Cyberpunk street market at night, neon signs, diverse crowd, stalls selling futuristic tech, rain-slicked streets, Blade Runner aesthetic',
+            'optimized_reasoning': 'I enhanced the basic street market with cyberpunk elements like neon lighting, futuristic technology, and rain-slicked streets.',
+            'enhanced_prompt': 'Cyberpunk street market at night, neon signs, diverse crowd, stalls selling futuristic tech, rain-slicked streets, Blade Runner aesthetic, cinematic lighting, volumetric fog, reflections on wet pavement, ultra-detailed, 8K resolution',
+            'enhanced_reasoning': 'I added cinematic elements like volumetric fog and reflections, and included technical details like 8K resolution for higher quality rendering.'
+        },
+        {
+            'taste': 'flat illustration',
+            'user_input': 'a civil engineer working on construction projects',
+            'optimized_prompt': 'Flat illustration of a civil engineer working on construction projects for quality audit of high-rise towers, soft color palette, clean lines, contemporary art style',
+            'optimized_reasoning': 'I enhanced the basic description by specifying it as a flat illustration with a clean, contemporary style and soft colors to match the aesthetic.',
+            'enhanced_prompt': 'Flat illustration of a civil engineer working on construction projects for quality audit of high-rise towers, soft color palette, a poster by Tom Whalen, featured on behance, context art, behance hd, art on instagram, storybook illustration, Pro freelance, Illustration agency, Popular on Dribbble, soft shadows, no contrast, clean ultrasharp focus, premium vector, hand drawn people, timeless art, human illustration, freepik, flat colours, their faces are visible, show less details, clean lines and smooth curves, 2d flat illustration, contemporary art illustration, contemporary painting, use minimum props, limited Colors, use light grey color overlay for shadow, use light white color overlay for highlights, delicate art, whimsy and wonder, whimsical, by Alice Lee style, Wax crayon brushes procreate style, hand drawn',
+            'enhanced_reasoning': 'I added specific flat illustration techniques and references to artists known for this style, along with details about color palettes, line work, and digital tools used to create this aesthetic.'
+        }
+    ]
+
+# Updated prompt_quality_metric function
+def prompt_quality_metric(example, pred, trace=None) -> float:
+    """Calculate quality score for the final enhanced prompt."""
+    prompt = pred.enhanced_prompt
+
+    # Quality indicators
+    has_details = 'detailed' in prompt.lower()
+    has_style = any(style in prompt.lower() for style in ['style', 'technique', 'aesthetic'])
+    has_technical = any(tech in prompt.lower() for tech in ['lighting', 'focus', 'texture', 'composition', 'resolution', 'aperture'])
+    has_mood = any(mood in prompt.lower() for mood in ['mood', 'atmosphere', 'ambiance', 'feeling'])
+
+    # Check if it includes relevant technical details for the style
+    has_photography_terms = True
+    has_painting_terms = True
+    has_anime_terms = True
+    has_cyberpunk_terms = True
+    has_watercolor_terms = True
+    has_3d_terms = True
+    has_flat_illustration_terms = True
+
+    if example.taste == 'photorealistic':
+        has_photography_terms = any(term in prompt.lower() for term in ['aperture', 'f/', 'shutter', 'depth', 'bokeh', 'photography', 'lens', 'camera'])
+    elif example.taste == 'oil painting':
+        has_painting_terms = any(term in prompt.lower() for term in ['brushstroke', 'impasto', 'canvas', 'palette', 'texture', 'oil', 'painting', 'brush'])
+    elif example.taste == 'anime':
+        has_anime_terms = any(term in prompt.lower() for term in ['anime', 'cel-shaded', 'manga', 'studio ghibli', 'japanese', 'cartoon', 'illustration'])
+    elif example.taste == 'cyberpunk':
+        has_cyberpunk_terms = any(term in prompt.lower() for term in ['neon', 'futuristic', 'blade runner', 'rain-slicked', 'volumetric fog', 'cybernetic', 'high-tech'])
+    elif example.taste == 'watercolor':
+        has_watercolor_terms = any(term in prompt.lower() for term in ['wet-on-wet', 'washes', 'transparency', 'flow', 'watercolor', 'aqueous', 'bleed'])
+    elif example.taste == '3d render':
+        has_3d_terms = any(term in prompt.lower() for term in ['3d', 'render', 'polygon', 'model', 'uv mapping', 'wireframe', 'mesh', 'texture', 'blender', 'maya'])
+    elif example.taste == 'flat illustration':
+        has_flat_illustration_terms = any(term in prompt.lower() for term in [
+            'flat illustration', 'flat colors', 'flat design', 'flat vector', '2d flat',
+            'clean lines', 'smooth curves', 'soft shadows', 'no contrast', 'clean ultrasharp focus',
+            'limited colors', 'light grey overlay', 'light white overlay', 'delicate art',
+            'whimsy', 'whimsical', 'hand drawn', 'procreate', 'wax crayon', 'storybook'
+        ])
+
+    # Calculate score
+    style_specific_indicators = []
+    
+    if example.taste == 'photorealistic':
+        style_specific_indicators = [has_photography_terms]
+    elif example.taste == 'oil painting':
+        style_specific_indicators = [has_painting_terms]
+    elif example.taste == 'anime':
+        style_specific_indicators = [has_anime_terms]
+    elif example.taste == 'cyberpunk':
+        style_specific_indicators = [has_cyberpunk_terms]
+    elif example.taste == 'watercolor':
+        style_specific_indicators = [has_watercolor_terms]
+    elif example.taste == '3d render':
+        style_specific_indicators = [has_3d_terms]
+    elif example.taste == 'flat illustration':
+        style_specific_indicators = [has_flat_illustration_terms]
+    
+    # Combine general indicators with style-specific ones
+    indicators = [has_details, has_style, has_technical, has_mood] + style_specific_indicators
+    return sum(indicators) / len(indicators)
+```
+
+## Key Changes Made:
+
+1. **Added 'flat illustration' to valid tastes** in the `validate_taste()` function.
+
+2. **Created a new training example** for flat illustration in the `create_training_data()` function, using the enhanced prompt you provided.
+
+3. **Updated the `prompt_quality_metric()` function** to include:
+   - A new flag `has_flat_illustration_terms` that checks for flat illustration-specific terms
+   - A condition for 'flat illustration' taste that evaluates the presence of relevant terms
+   - The style-specific indicators now include flat illustration terms
+
+4. **Added comprehensive flat illustration keywords** to check for:
+   - Style terms: "flat illustration", "flat colors", "flat design", "flat vector", "2d flat"
+   - Technique terms: "clean lines", "smooth curves", "soft shadows", "no contrast"
+   - Technical specs: "clean ultrasharp focus", "limited colors", "light grey overlay"
+   - Artistic elements: "delicate art", "whimsy", "whimsical", "hand drawn"
+   - Tools/References: "procreate", "wax crayon", "storybook"
+
+Now when you use "flat illustration" as a taste, the system will:
+1. Accept it as a valid taste
+2. Use the training example to learn how to optimize prompts for this style
+3. Evaluate generated prompts using the new quality metrics specific to flat illustration
+4. Include relevant flat illustration terms in the quality assessment
+
+==========
+
 # DSPy Prompt Generation Explanation
 
 Keep temperature 0.7 . Else keep 0.3 when you want detailed prompt without much creativity. The only part that wasn't working was the `BootstrapFewShot` teleprompter, but the core DSPy functionality for prompt generation is fully implemented and working, as evidenced by the successful prompt generation outputs in the test runs. So the learning from examples provided doesnt work.
