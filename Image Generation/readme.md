@@ -1,6 +1,6 @@
 " Very important note:
 
-the below For "flat illustration" style instructions **supercedes** the priority of acceptance in final output than referring to examples given for training. (the examples with reference prompts are good for training dspy to answer. however it sometimes adds some other art style or elements. 
+the below For "flat illustration" style instructions in prompt template **supercedes** the priority of acceptance in final output than referring to examples given for training. (the examples with reference prompts are good for training dspy to answer. however it sometimes adds some other art style or elements. 
 
 hence you must be adding additional inputs in prompt template to absolutely use this and give priority.)
 
