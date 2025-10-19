@@ -1,3 +1,38 @@
+" Very important note:
+
+the below For "flat illustration" style instructions **supercedes** the priority of examples given for training. the examples with reference promots are good for training dspy to answer. however it sometimes adds some other art style or elements. 
+
+hence you must be adding additional inputs in prompt template to absolutely use this and give priority.
+
+ # Create a prediction with the LM
+                pred = self.lm(
+                    prompt=f"""You are an expert image prompt engineer. Generate an enhanced image generation prompt with the following details:
+
+Taste: {taste}
+User Input: {user_input}
+
+Examples of {taste} prompts:
+{examples_text}
+
+For "flat illustration" style:
+    - ALWAYS include: "by Alice Lee style, Wax crayon brushes procreate style, hand drawn" (this is required)
+    - Include other style elements when they are suitable for the subject matter:
+        "a poster by Tom Whalen, featured on behance, context art, behance hd, art on instagram, storybook illustration, Pro freelance, Illustration agency, Popular on Dribbble"
+        "soft shadows, no contrast, clean ultrasharp focus, premium vector, hand drawn people, timeless art, human illustration, freepik, flat colours"
+        "their faces are visible, show less details, clean lines and smooth curves, 2d flat illustration, contemporary art illustration, contemporary painting"
+        "use minimum props, limited Colors, use light grey color overlay for shadow, use light white color overlay for highlights, delicate art, whimsy and wonder, whimsical"
+    - Pick the best suitable elements based on the user input
+
+
+
+Generate a detailed, enhanced image prompt that captures the essence of the input with the specified style.
+
+Output:""",
+            
+
+
+
+
 # Implementation Guide: Adding Watercolor Style Support
 
 ## Step 1: Add Examples
