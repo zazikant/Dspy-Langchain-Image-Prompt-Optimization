@@ -1,4 +1,10 @@
-# Step 1: Add examples
+# Implementation Guide: Adding Watercolor Style Support
+
+## Step 1: Add Examples
+
+Add the watercolor example to your examples collection:
+
+```python
 Example(
     taste="watercolor",
     user_input="a peaceful mountain landscape",
@@ -11,10 +17,89 @@ Example(
 **Output**:
 Serene watercolor painting of distant mountains with soft blue and purple hues, visible brush strokes, wet-on-wet technique creating soft edges, textured paper showing through, loose and expressive style, light washes of color creating depth, subtle details with fine brushwork, gentle gradations of color, ethereal atmosphere, by a contemporary watercolor artist"""
 )
+```
 
-# Step 2: Update prompt generation logic
+## Step 2: Update Prompt Generation Logic
+
+Add watercolor-specific style instructions to your prompt generator:
+
+```python
 if taste == "watercolor":
     style_instructions = """
+    For "watercolor" style, make sure to include these key elements:
+    - "visible brush strokes"
+    - "wet-on-wet technique"
+    - "textured paper showing through"
+    - "loose and expressive style"
+    - "light washes of color"
+    - "ethereal atmosphere"
+    """
+```
+
+## Step 3: Add Term Verification
+
+Implement a verification method to check for watercolor-specific terms:
+
+```python
+def has_watercolor_terms(self, prompt: str) -> bool:
+    """
+    Check if a prompt contains watercolor style terms
+
+    Args:
+        prompt: The prompt to check
+
+    Returns:
+        True if watercolor terms are found, False otherwise
+    """
+    watercolor_terms = [
+        'watercolor', 'brush strokes', 'wet-on-wet', 'textured paper',
+        'loose style', 'light washes', 'ethereal', 'watercolor painting',
+        'watercolor artist', 'watercolor technique', 'watercolor style'
+    ]
+    return any(term in prompt.lower() for term in watercolor_terms)
+```
+
+## Step 4: Update Fallback Method
+
+Add a watercolor-specific fallback template:
+
+```python
+if taste == "watercolor":
+    return f"""Watercolor painting of {user_input}, visible brush strokes, wet-on-wet technique, textured paper showing through, loose and expressive style, light washes of color, ethereal atmosphere."""
+```
+
+## Step 5: Add to Test Cases
+
+Include watercolor in your test suite:
+
+```python
+test_cases = [
+    # ... existing test cases ...
+    ("watercolor", "a peaceful mountain landscape"),
+    ("watercolor", "a cat sitting on a windowsill"),
+    ("watercolor", "city street in the rain")
+]
+```
+
+## Step 6: Integration Checklist
+
+- [ ] Add watercolor example to examples collection
+- [ ] Update style instructions in prompt generator
+- [ ] Implement `has_watercolor_terms()` verification method
+- [ ] Add watercolor fallback template
+- [ ] Add test cases for watercolor style
+- [ ] Run tests to verify watercolor prompts include required terms
+- [ ] Test with various user inputs to ensure quality
+- [ ] Document watercolor style characteristics in your style guide
+
+## Expected Behavior
+
+When a user requests watercolor style:
+1. System uses the watercolor example as reference
+2. Generates prompt with watercolor-specific terminology
+3. Verifies required terms are present
+4. Falls back to template if generation fails
+5. Returns enhanced prompt with authentic watercolor characteristics    style_instructions = """
     For "watercolor" style, make sure to include these key elements:
     - "visible brush strokes"
     - "wet-on-wet technique"
